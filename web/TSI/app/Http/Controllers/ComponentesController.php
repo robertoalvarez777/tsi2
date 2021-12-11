@@ -28,18 +28,34 @@ class ComponentesController extends Controller
     public function filtrarComponentes(Request $request){
         $input = $request->all();
         $filtro = $input["filtro"];
-        $componentes = Componente::where("tipocomp", $filtro)->get();
+        $componentes = Componente::where("cod_tipo_comp", $filtro)->get();
+        return $componentes;
+    }
+    
+    public function filtrarComponentesMarca(Request $request){
+        $input = $request->all();
+        $filtromarca = $input["filtro"];
+        $componentes = Componente::where("cod_marca", $filtromarca)->get();
         return $componentes;
     }
 
     public function crearComponentes(Request $request){
         $input = $request->all();
         $componente = new Componente();
-        $componente->tipocomp = $input["tipocomp"];
+        $componente->cod_tipo_comp = $input["tipocomp"];
         $componente->nombre = $input["nombre"];
-        $componente->precio = $input["precio"];
         $componente->descripcion = $input["descripcion"];
-        $componente->linkcomp = $input["linkcomp"];
+        $componente->cod_marca = $input["marca"];
+        $componente->modelo = $input["modelo"];
+        $componente->url_imagen = $input["url_imagen"];
+        //$componente->cod_imagen = $input["cod_imagen"];
+        $componente->correo_usuario = $input["correo_usuario"];
+
+        /*if($archivo = $request->file('imagen')){
+            $nombre=$archivo->getClientOriginalName();
+            $archivo->move('img',$nombre);
+            $componente->imagen = $nombre;
+        }*/
 
         $componente->save();
         return $componente;
@@ -64,11 +80,13 @@ class ComponentesController extends Controller
         $input = $request->all();
         $id = $input["id"];
         $componente = Componente::findOrFail($id);
-        $componente->tipocomp = $input["tipocomp"];
+        $componente->cod_tipo_comp = $input["cod_tipo_comp"];
         $componente->nombre = $input["nombre"];
-        $componente->precio = $input["precio"];
+        $componente->modelo = $input["modelo"];
         $componente->descripcion = $input["descripcion"];
-        $componente->linkcomp = $input["linkcomp"];
+        $componente->cod_marca = $input["cod_marca"];
+        $componente->url_imagen = $input["url_imagen"];
+        
         $componente->save();
         return $componente;
     }

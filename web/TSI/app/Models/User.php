@@ -40,4 +40,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /*public function setPasswordAttribute($password){
+        $this->atributos['password'] = bcrypt($password);
+    }*/
+
+    public function componente(){
+        return $this->hasMany(Componente::class);
+    }
+    public function lista(){
+        return $this->hasMany(Lista::class);
+    }
+    public function hilo_foro(){
+        return $this->hasMany(Hiloforo::class);
+    }
+    public function resp_foro(){
+        return $this->hasMany(Respforo::class);
+    }
+    public function comp_tienda(){
+        return $this->hasMany(Comptienda::class);
+    }
+    public function valoracion_users(){
+        return $this->belongsToMany(Componente::class, 'valoraciones');
+    }
 }

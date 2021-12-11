@@ -1,4 +1,4 @@
-const cargarTiposComp = async()=>{
+const cargarTiposComp = async() => {
     let tipos = await getTiposComp();
     let tipoSelect = document.querySelector("#tipocomp-select");
     tipos.forEach(t => {
@@ -7,50 +7,78 @@ const cargarTiposComp = async()=>{
         tipoSelect.appendChild(option);
     });
 }
-document.addEventListener("DOMContentLoaded", ()=>{
-    cargarTiposComp();
-});
 
-document.querySelector("#registrar-btn").addEventListener("click", async ()=>{
-    let tipocomp = document.querySelector("#tipocomp-select").value.trim();
+document.querySelector("#registrar-btn").addEventListener("click", async() => {
+    let tipocomp = Number(document.querySelector("#tipocomp-select").value.trim());
     let nombre = document.querySelector("#nombre-txt").value.trim();
-    let precio = document.querySelector("#precio-txt").value.trim();
+    let marca = Number(document.querySelector("#marca-select").value.trim());
+    let modelo = document.querySelector("#modelo-txt").value.trim();
     let descripcion = document.querySelector("#descripcion-txt").value.trim();
-    let linkcomp = document.querySelector("#link-txt").value.trim();
+    let url_imagen = document.querySelector("#imagen").value.trim();
+    let correo_usuario = document.querySelector("#correo_usuario").value;
+
+    let duplicado = 0;
 
     let errores = [];
-    if(nombre === ""){
+    if (nombre === "") {
         errores.push("Debe ingresar un nombre");
-    }
-
-    if(linkcomp === ""){
-        errores.push("Debe ingresar un link");
-    }else{
+    } else {
         let componentes = await getComponentes();
-        let componenteEncontrado = componentes.find(c=>c.linkcomp.toLowerCase() == linkcomp.toLowerCase());
-        if(componenteEncontrado != undefined){
-            errores.push("El componente de esa tienda ya existe")
+        let nombreEncontrado = componentes.find(c => c.nombre.toLowerCase() == nombre.toLowerCase());
+        if (nombreEncontrado != undefined) {
+            duplicado++;
         }
     }
-    if(precio === ""){
-        errores.push("Debe ingresar un precio");
-    }else if(isNaN(precio)){
-        errores.push("El precio debe ser numerico");
-    }else if(+precio < 0){
-        errores.push("El precio no debe ser negativo");
+
+    if (url_imagen === "") {
+        errores.push("Debe ingresar una imagen");
     }
 
-    if(errores.length == 0){
+    if (modelo === "") {
+        errores.push("Debe ingresar un modelo");
+    } else {
+        let componentes = await getComponentes();
+        let modeloEncontrado = componentes.find(c => c.modelo.toLowerCase() == modelo.toLowerCase());
+        let marcaEncontrado = componentes.find(c => c.cod_marca == marca);
+        if (modeloEncontrado != undefined && marcaEncontrado != undefined) {
+            duplicado++;
+        }
+    }
+
+    if (descripcion === "") {
+        errores.push("Debe ingresar una descripcion");
+    }
+
+    if (duplicado > 0) {
+        errores.push("El componente ya existe");
+    }
+
+    if (errores.length == 0) {
+
+        /*let imagen_ruta = {};
+        imagen_ruta.ruta = url_imagen
+
+        crearImagen(imagen_ruta);
+
+        let imagenes = await getImagenes();
+
+        let cod_imagen = imagenes.length;*/
+
+
+
         let componente = {};
         componente.tipocomp = tipocomp;
         componente.nombre = nombre;
-        componente.precio = precio;
+        componente.marca = marca;
+        componente.modelo = modelo;
         componente.descripcion = descripcion;
-        componente.linkcomp = linkcomp;
-        
+        componente.url_imagen = url_imagen;
+        //componente.cod_imagen = cod_imagen;
+        componente.correo_usuario = correo_usuario;
+
         let res = await crearComponentes(componente);
         Swal.fire("Componente Creado", "Componente creado exitosamente", "info");
-    }else{
+    } else {
         Swal.fire({
             title: "Errores de validacion",
             icon: "warning",

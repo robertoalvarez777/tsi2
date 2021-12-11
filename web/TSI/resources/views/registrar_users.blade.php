@@ -1,108 +1,64 @@
 @extends('layouts.master')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/estilo_registrar.css') }}">
+@endsection
+
 @section('contenido')
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
-form {border: 3px solid #f1f1f1;}
+    <!DOCTYPE html>
+    <html>
 
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 20px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
 
-button {
-  background-color: #04AA6D;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-}
+    <body>
+        <form action="registrar_usuarios" method="POST">
+            @csrf
+            <div class="imgcontainer">
+                <img src="{{ asset('img/usuario.png') }}" alt="Avatar" class="avatar">
+            </div>
+            <div>
+                <h1 class="text-center font-bold">REGISTRAR USUARIO</h1>
+            </div>
+            <div class="container">
+                <label for="name"><b>Nombre de Usuario</b></label>
+                <input type="text" placeholder="Ingresar Nombre de Usuario" id="name" name="name" value="{{old('name')}}" required>
 
-button:hover {
-  opacity: 0.8;
-}
+                @error('name')
+                    <p class="text-danger text-xs mt-1">Ingrese un nombre de usuario válido</p>
+                @enderror
 
-.cancelbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #f44336;
-}
-.iniciobtn{
-  width: auto;
-  padding: 10px 18px;
-  background-color: #f44336;
-}
 
-.imgcontainer {
-  text-align: center;
-  margin: 24px 0 12px 0;
-}
+                <label for="email"><b>Correo</b></label>
+                <input type="text" placeholder="Ingresar Correo" id="email" name="email" value="{{old('email')}}" required>
 
-.avatar {
-  width: 100px;
-  border-radius: 50%;
-}
+                @error('email')
+                    <p class="text-danger text-xs mt-1">Ingrese una dirección de correo válida</p>
+                @enderror
 
-.container {
-  padding: 100px;
-}
+                <label for="password"><b>Contraseña</b></label>
+                <input type="password" placeholder="Ingresar Contraseña" id="password" name="password" required>
 
-span.psw {
-  float: right;
-  padding-top: 16px;
-}
+                @error('password')
+                    <p class="text-danger text-xs mt-1">La contraseña debe tener como mínimo 8 caracteres</p>
+                @enderror
 
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-     display: block;
-     float: none;
-  }
-  .cancelbtn {
-     width: 100%;
-  }
-}
-</style>
-</head>
-<body>
-<form action="{{route('home')}}" method="post">
-  <div class="imgcontainer">
-    <img src="{{asset('img/logo.png')}}" alt="Avatar" class="avatar">
-  </div>
 
-  <div class="container">
-    <label for="uname"><b>Usuario</b></label>
-    <input type="text" placeholder="Ingresar Usuario" id="name-txt" required>
+                <button class="bg-success btn rounded-3 text-white" type="submit" id="registrar-btn">Guardar Datos</button>
 
-    <label for="uname"><b>Correo</b></label>
-    <input type="text" placeholder="Ingresar Correo" id="email-txt" required>
+            </div>
+        </form>
 
-    <label for="psw"><b>Contraseña</b></label>
-    <input type="password" placeholder="Ingresar Contraseña" id="password-txt" required>
-        
-    <button type="submit" id="registrar-btn" >Guardar Datos</button>
+    </body>
 
-  </div>
-
-  <div class="container" style="background-color:#ffffff">
-    <button type="button" class="cancelbtn">Cancelar</button>
-    <li><a class="nav-link active" aria-current="page" href="{{route('home')}}">Inicio</a></li>
-  </div>
-</form>
-
-</body>
-</html>
+    </html>
 
 
 
+@endsection
+
+@section('javascript')
+    <script src="{{ asset('js/servicios/usersService.js') }}"></script>
+    <!--<script src="{{ asset('js/añadir_users.js') }}"></script>-->
 @endsection
